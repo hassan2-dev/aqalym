@@ -1,7 +1,8 @@
 import { Ionicons } from '@expo/vector-icons';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { Pressable, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { BrandLogo } from '@/components/ui/BrandLogo';
 import { Colors } from '@/constants/theme';
 import { useAppTheme } from '@/hooks/useAppTheme';
 
@@ -17,7 +18,7 @@ export function HomeHeader({ onNotifications }: HomeHeaderProps) {
     <View style={[styles.wrap, { paddingTop: insets.top + 8, backgroundColor: colors.card }]}>
       <View style={styles.side} />
 
-      <Text style={[styles.brand, { color: Colors.primary }]}>أقاليم</Text>
+      <BrandLogo variant="header" />
 
       <Pressable onPress={onNotifications} hitSlop={12} style={styles.iconBtn}>
         <Ionicons name="notifications-outline" size={22} color={Colors.primary} />
@@ -33,10 +34,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingHorizontal: 16,
     paddingBottom: 12,
-  },
-  brand: {
-    fontFamily: 'IBMPlexSansArabic_700Bold',
-    fontSize: 20,
   },
   side: {
     width: 40,

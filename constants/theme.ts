@@ -141,7 +141,7 @@ export const IRAQ_GOVERNORATES = [
 export const COMPANY = {
   name: 'أقاليم',
   nameAr: 'أقاليم',
-  tagline: 'أنظمة ألمنيوم معمارية فاخرة',
+  tagline: 'جودة اليوم ثقة المستقبل',
   phone: '+964 770 000 0000',
   email: 'info@aqalym.iq',
   website: 'https://aqalym.iq',

@@ -14,8 +14,9 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 
 import { Button } from '@/components/ui/Button';
+import { BrandLogo } from '@/components/ui/BrandLogo';
 import { ar } from '@/constants/i18n';
-import { Colors } from '@/constants/theme';
+import { Colors, COMPANY } from '@/constants/theme';
 import { useAppTheme } from '@/hooks/useAppTheme';
 import { formatPhoneDisplay } from '@/lib/format';
 import { DEMO_OTP, isValidIraqiPhone } from '@/services/auth';
@@ -88,8 +89,8 @@ export default function LoginScreen() {
         showsVerticalScrollIndicator={false}
       >
         <View style={styles.hero}>
-          <Text style={styles.brand}>أقاليم</Text>
-          <Text style={[styles.welcome, { color: colors.textSecondary }]}>{ar.auth.welcome}</Text>
+          <BrandLogo variant="hero" />
+          <Text style={[styles.welcome, { color: colors.textSecondary }]}>{COMPANY.tagline}</Text>
         </View>
 
         {phase === 'phone' ? (
@@ -201,20 +202,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 36,
   },
-  brand: {
-    fontFamily: 'IBMPlexSansArabic_700Bold',
-    fontSize: 34,
-    color: Colors.primary,
-    textAlign: 'center',
-    writingDirection: 'rtl',
-    marginBottom: 10,
-  },
   welcome: {
     fontFamily: 'IBMPlexSansArabic_400Regular',
     fontSize: 14,
     textAlign: 'center',
     writingDirection: 'rtl',
     lineHeight: 24,
+    marginTop: 12,
   },
   form: {
     gap: 10,
