@@ -1,17 +1,18 @@
 import { Link, Stack } from 'expo-router';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 
-import { Text, View } from '@/components/Themed';
+import { useAppTheme } from '@/hooks/useAppTheme';
 
 export default function NotFoundScreen() {
+  const { colors } = useAppTheme();
+
   return (
     <>
-      <Stack.Screen options={{ title: 'Oops!' }} />
-      <View style={styles.container}>
-        <Text style={styles.title}>This screen doesn't exist.</Text>
-
+      <Stack.Screen options={{ title: 'غير موجود' }} />
+      <View style={[styles.container, { backgroundColor: colors.background }]}>
+        <Text style={[styles.title, { color: colors.text }]}>هذه الصفحة غير موجودة</Text>
         <Link href="/" style={styles.link}>
-          <Text style={styles.linkText}>Go to home screen!</Text>
+          <Text style={{ color: colors.accent, fontFamily: 'IBMPlexSansArabic_500Medium' }}>العودة للرئيسية</Text>
         </Link>
       </View>
     </>
@@ -19,22 +20,7 @@ export default function NotFoundScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 20,
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
-  link: {
-    marginTop: 15,
-    paddingVertical: 15,
-  },
-  linkText: {
-    fontSize: 14,
-    color: '#2e78b7',
-  },
+  container: { flex: 1, alignItems: 'center', justifyContent: 'center', padding: 20 },
+  title: { fontFamily: 'IBMPlexSansArabic_600SemiBold', fontSize: 18 },
+  link: { marginTop: 16 },
 });

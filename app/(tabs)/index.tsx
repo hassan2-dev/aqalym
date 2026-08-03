@@ -1,31 +1,143 @@
-import { StyleSheet } from 'react-native';
+import { router } from 'expo-router';
+import { ScrollView, StyleSheet, View } from 'react-native';
 
-import EditScreenInfo from '@/components/EditScreenInfo';
-import { Text, View } from '@/components/Themed';
+import { HeroBanner } from '@/components/home/HeroBanner';
+import { HomeHeader } from '@/components/home/HomeHeader';
+import {
+  CategoryCircle,
+  FeaturedGridCard,
+  ProjectsGallery,
+  SectionHeader,
+  WhySection,
+} from '@/components/home/HomeSections';
+import { Skeleton } from '@/components/ui/Skeleton';
+import { ar } from '@/constants/i18n';
+import { useCategories, useProjects, useReadyProducts } from '@/hooks/useCatalog';
+import { useAppTheme } from '@/hooks/useAppTheme';
+import { useWizardStore } from '@/stores/wizardStore';
 
-export default function TabOneScreen() {
+export default function HomeScreen() {
+  const { colors } = useAppTheme();
+  const { data: categories = [], isLoading: catLoading } = useCategories();
+  const { data: readyProducts = [], isLoading: readyLoading } = useReadyProducts();
+  const { data: projects = [], isLoading: projLoading } = useProjects();
+  const setCategory = useWizardStore((s) => s.setCategory);
+  const setStep = useWizardStore((s) => s.setStep);
+  const reset = useWizardStore((s) => s.reset);
+
+  const goServices = () => router.push('/(tabs)/services');
+
+  const openCategory = (catId: string) => {
+    const cat = categories.find((c) => c.id === catId);
+    if (!cat) return;
+    reset();
+    setCategory(cat);
+    setStep(2);
+    goServices();
+  };
+
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Tab One</Text>
-      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-      <EditScreenInfo path="app/(tabs)/index.tsx" />
+    <View style={{ flex: 1, backgroundColor: colors.background }}>
+      <HomeHeader onNotifications={() => router.push('/(tabs)/orders')} />
+
+      <ScrollView
+        style={{ flex: 1 }}
+        contentContainerStyle={styles.content}
+        showsVerticalScrollIndicator={false}
+      >
+        <HeroBanner onCta={goServices} />
+
+        <View style={styles.block}>
+          <View style={styles.pad}>
+            <SectionHeader
+              title={ar.home.categoriesTitle}
+              actionLabel={ar.home.viewAll}
+              onAction={goServices}
+            />
+          </View>
+          <ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={styles.catList}
+          >
+            {catLoading
+              ? [1, 2, 3, 4].map((i) => (
+                  <Skeleton key={i} width={72} height={72} borderRadius={36} />
+                ))
+              : categories.map((cat) => (
+                  <CategoryCircle
+                    key={cat.id}
+                    category={cat}
+                    onPress={() => openCategory(cat.id)}
+                  />
+                ))}
+          </ScrollView>
+        </View>
+
+        <View style={[styles.block, styles.pad]}>
+          <SectionHeader title={ar.home.featuredTitle} />
+          {readyLoading ? (
+            <View style={styles.grid}>
+              <Skeleton height={180} style={{ flex: 1, borderRadius: 14 }} />
+              <Skeleton height={180} style={{ flex: 1, borderRadius: 14 }} />
+            </View>
+          ) : (
+            <View style={styles.gridWrap}>
+              {readyProducts.map((p) => (
+                <FeaturedGridCard
+                  key={p.id}
+                  product={p}
+                  onPress={() =>
+                    router.push({ pathname: '/product/[id]', params: { id: p.id } })
+                  }
+                />
+              ))}
+            </View>
+          )}
+        </View>
+
+        <View style={[styles.block, styles.pad]}>
+          <SectionHeader
+            title={ar.home.projectsTitle}
+            actionLabel={ar.home.exploreGallery}
+            onAction={goServices}
+          />
+          {projLoading ? (
+            <Skeleton height={300} borderRadius={16} />
+          ) : (
+            <ProjectsGallery projects={projects} />
+          )}
+        </View>
+
+        <WhySection />
+
+        <View style={{ height: 28 }} />
+      </ScrollView>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+  content: {
+    paddingBottom: 16,
   },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
+  block: {
+    marginTop: 28,
   },
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: '80%',
+  pad: {
+    paddingHorizontal: 20,
+  },
+  catList: {
+    paddingHorizontal: 20,
+    gap: 14,
+  },
+  grid: {
+    flexDirection: 'row',
+    gap: 12,
+  },
+  gridWrap: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 12,
   },
 });

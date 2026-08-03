@@ -1,56 +1,83 @@
-import { useFonts } from 'expo-font';
-import { DarkTheme, DefaultTheme, Stack, ThemeProvider } from 'expo-router';
+import '../global.css';
+
+import {
+  IBMPlexSansArabic_400Regular,
+  IBMPlexSansArabic_500Medium,
+  IBMPlexSansArabic_600SemiBold,
+  IBMPlexSansArabic_700Bold,
+  useFonts,
+} from '@expo-google-fonts/ibm-plex-sans-arabic';
+import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
+import { StatusBar } from 'expo-status-bar';
 import { useEffect } from 'react';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import 'react-native-reanimated';
 
-import { useColorScheme } from '@/components/useColorScheme';
+import { OfflineBanner } from '@/components/ui/OfflineBanner';
+import { useAppTheme } from '@/hooks/useAppTheme';
+import { AppProviders } from '@/providers/AppProviders';
 
-export {
-  // Catch any errors thrown by the Layout component.
-  ErrorBoundary,
-} from 'expo-router';
+export { ErrorBoundary } from 'expo-router';
 
-export const unstable_settings = {
-  // Ensure that reloading on `/modal` keeps a back button present.
-  initialRouteName: '(tabs)',
-};
-
-// Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
   const [loaded, error] = useFonts({
-    SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
+    IBMPlexSansArabic_400Regular,
+    IBMPlexSansArabic_500Medium,
+    IBMPlexSansArabic_600SemiBold,
+    IBMPlexSansArabic_700Bold,
   });
 
-  // Expo Router uses Error Boundaries to catch errors in the navigation tree.
   useEffect(() => {
     if (error) throw error;
   }, [error]);
 
   useEffect(() => {
-    if (loaded) {
-      SplashScreen.hideAsync();
-    }
+    if (loaded) SplashScreen.hideAsync();
   }, [loaded]);
 
-  if (!loaded) {
-    return null;
-  }
-
-  return <RootLayoutNav />;
-}
-
-function RootLayoutNav() {
-  const colorScheme = useColorScheme();
+  if (!loaded) return null;
 
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <AppProviders>
+        <RootNavigator />
+      </AppProviders>
+    </GestureHandlerRootView>
+  );
+}
+
+function RootNavigator() {
+  const { isDark, colors } = useAppTheme();
+
+  return (
+    <>
+      <StatusBar style={isDark ? 'light' : 'dark'} />
+      <OfflineBanner />
+      <Stack
+        screenOptions={{
+          headerStyle: { backgroundColor: colors.background },
+          headerTintColor: colors.text,
+          headerTitleStyle: {
+            fontFamily: 'IBMPlexSansArabic_600SemiBold',
+          },
+          headerShadowVisible: false,
+          contentStyle: { backgroundColor: colors.background },
+          headerBackTitle: 'رجوع',
+        }}
+      >
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="modal" options={{ presentation: 'modal' }} />
+        <Stack.Screen name="login" options={{ headerShown: false, presentation: 'modal' }} />
+        <Stack.Screen name="product/[id]" options={{ title: 'تفاصيل المنتج' }} />
+        <Stack.Screen name="order/[id]" options={{ title: 'تفاصيل الطلب' }} />
+        <Stack.Screen name="privacy" options={{ title: 'سياسة الخصوصية' }} />
+        <Stack.Screen name="terms" options={{ title: 'الشروط والأحكام' }} />
+        <Stack.Screen name="about" options={{ title: 'عن أقاليم' }} />
+        <Stack.Screen name="contact" options={{ title: 'تواصل معنا' }} />
+        <Stack.Screen name="+not-found" />
       </Stack>
-    </ThemeProvider>
+    </>
   );
 }
