@@ -4,7 +4,6 @@ import { router } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 
 import { HomeHeader } from '@/components/home/HomeHeader';
-import { ServiceStepIndicator } from '@/components/services/ServiceStepIndicator';
 import { StepCategory } from '@/components/services/StepCategory';
 import {
   StepAuth,
@@ -104,34 +103,25 @@ export default function ServicesScreen() {
     setSubmitted(order.id, order.orderNumber);
   };
 
-  const isEarly = step === 1 || step === 2;
-  const progressStep = step === 8 ? 7 : step === 3 ? 3 : Math.min(step, 7);
+  const progressStep = step === 8 ? 7 : Math.min(step, 7);
 
   return (
     <View style={[styles.wrap, { backgroundColor: colors.background }]}>
-      {isEarly ? (
-        <HomeHeader
-          onNotifications={() => router.push('/(tabs)/orders')}
-        />
-      ) : (
-        <View style={styles.header}>
-          {step > 1 && step < 8 ? (
-            <Pressable onPress={back} hitSlop={12} style={styles.backBtn}>
-              <Ionicons name="chevron-forward" size={24} color={Colors.primary} />
-            </Pressable>
-          ) : (
-            <View style={{ width: 24 }} />
-          )}
-          <Text style={[styles.title, { color: Colors.primary }]}>{ar.services.title}</Text>
-          <View style={{ width: 24 }} />
-        </View>
-      )}
+      <HomeHeader onNotifications={() => router.push('/notifications')} />
 
-      {step === 1 || step === 2 ? (
-        <ServiceStepIndicator activeStep={step === 1 ? 1 : 2} />
-      ) : step < 8 ? (
-        <WizardProgress step={progressStep} />
-      ) : null}
+      <View style={styles.header}>
+        {step > 1 && step < 8 ? (
+          <Pressable onPress={back} hitSlop={12} style={styles.backBtn}>
+            <Ionicons name="chevron-forward" size={24} color={Colors.primary} />
+          </Pressable>
+        ) : (
+          <View style={styles.backBtn} />
+        )}
+        <Text style={[styles.title, { color: Colors.primary }]}>{ar.services.title}</Text>
+        <View style={styles.backBtn} />
+      </View>
+
+      {step < 8 ? <WizardProgress step={progressStep} /> : null}
 
       <View style={{ flex: 1 }}>
         {step === 1 && (
@@ -190,19 +180,22 @@ export default function ServicesScreen() {
 const styles = StyleSheet.create({
   wrap: { flex: 1 },
   header: {
-    flexDirection: 'row',
+    flexDirection: 'row-reverse',
     alignItems: 'center',
-    justifyContent: 'space-between',
     paddingHorizontal: 16,
-    paddingVertical: 12,
-    paddingTop: 52,
+    paddingBottom: 4,
   },
   title: {
+    flex: 1,
     fontFamily: 'IBMPlexSansArabic_700Bold',
     fontSize: 20,
+    textAlign: 'center',
     writingDirection: 'rtl',
   },
   backBtn: {
-    padding: 4,
+    width: 40,
+    height: 40,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });

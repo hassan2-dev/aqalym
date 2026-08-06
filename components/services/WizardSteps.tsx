@@ -27,7 +27,6 @@ import { useWizardStore } from '@/stores/wizardStore';
 import type { Product } from '@/types/models';
 
 export function WizardProgress({ step, total = 7 }: { step: number; total?: number }) {
-  // kept for later wizard steps â€” early steps use ServiceStepIndicator
   const { colors } = useAppTheme();
   const displayStep = Math.min(step, total);
   return (
@@ -328,11 +327,12 @@ export function StepProjectInfo({
     return gov?.cities ?? [];
   }, [state.governorate]);
 
+  const setProjectInfo = state.setProjectInfo;
+  const savedName = user?.name;
   useEffect(() => {
-    if (user?.phone && !state.customerName) {
-      // keep phone from auth; name filled by user
-    }
-  }, [user, state.customerName]);
+    if (savedName && !state.customerName) setProjectInfo({ customerName: savedName });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [savedName]);
 
   const validate = () => {
     const next: Record<string, string> = {};
@@ -519,14 +519,21 @@ const styles = StyleSheet.create({
     fontFamily: 'IBMPlexSansArabic_500Medium',
     fontSize: 13,
     textAlign: 'right',
+    writingDirection: 'rtl',
   },
-  track: { height: 4, borderRadius: 2, overflow: 'hidden' },
+  track: {
+    height: 4,
+    borderRadius: 2,
+    overflow: 'hidden',
+    flexDirection: 'row-reverse',
+  },
   fill: { height: '100%', borderRadius: 2 },
   stepPad: { padding: 20, paddingBottom: 40 },
   stepTitle: {
     fontFamily: 'IBMPlexSansArabic_700Bold',
     fontSize: 24,
     textAlign: 'right',
+    writingDirection: 'rtl',
     marginBottom: 16,
   },
   body: {
@@ -534,6 +541,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     lineHeight: 24,
     textAlign: 'right',
+    writingDirection: 'rtl',
   },
   catGrid: { gap: 12 },
   catTile: {
@@ -546,6 +554,7 @@ const styles = StyleSheet.create({
     fontFamily: 'IBMPlexSansArabic_600SemiBold',
     fontSize: 16,
     textAlign: 'right',
+    writingDirection: 'rtl',
     paddingHorizontal: 14,
     marginTop: 12,
   },
@@ -553,6 +562,7 @@ const styles = StyleSheet.create({
     fontFamily: 'IBMPlexSansArabic_400Regular',
     fontSize: 12,
     textAlign: 'right',
+    writingDirection: 'rtl',
     paddingHorizontal: 14,
     marginTop: 4,
     lineHeight: 18,
@@ -603,17 +613,18 @@ const styles = StyleSheet.create({
     fontFamily: 'IBMPlexSansArabic_600SemiBold',
     fontSize: 16,
     textAlign: 'right',
+    writingDirection: 'rtl',
     marginTop: 22,
     marginBottom: 10,
   },
   specRow: {
-    flexDirection: 'row',
+    flexDirection: 'row-reverse',
     justifyContent: 'space-between',
     paddingVertical: 10,
     borderBottomWidth: StyleSheet.hairlineWidth,
   },
   colorRow: {
-    flexDirection: 'row',
+    flexDirection: 'row-reverse',
     flexWrap: 'wrap',
     gap: 10,
   },
@@ -623,7 +634,7 @@ const styles = StyleSheet.create({
     borderRadius: 16,
   },
   chips: {
-    flexDirection: 'row',
+    flexDirection: 'row-reverse',
     flexWrap: 'wrap',
     gap: 8,
   },
@@ -634,7 +645,7 @@ const styles = StyleSheet.create({
     borderWidth: StyleSheet.hairlineWidth,
   },
   accRow: {
-    flexDirection: 'row',
+    flexDirection: 'row-reverse',
     alignItems: 'center',
     gap: 12,
     padding: 14,
@@ -649,7 +660,7 @@ const styles = StyleSheet.create({
     writingDirection: 'rtl',
   },
   locRow: {
-    flexDirection: 'row',
+    flexDirection: 'row-reverse',
     alignItems: 'center',
     gap: 12,
   },

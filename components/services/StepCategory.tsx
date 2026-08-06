@@ -1,6 +1,6 @@
-import { Ionicons } from '@expo/vector-icons';
 import { Dimensions, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 
+import { CategoryIcon } from '@/components/ui/CategoryIcon';
 import { ar } from '@/constants/i18n';
 import { Colors } from '@/constants/theme';
 import { useAppTheme } from '@/hooks/useAppTheme';
@@ -11,30 +11,22 @@ const PAD = 20;
 const GAP = 12;
 const CARD_W = (SCREEN_W - PAD * 2 - GAP) / 2;
 
-const ICONS: Record<string, keyof typeof Ionicons.glyphMap> = {
-  doors: 'exit-outline',
-  windows: 'grid-outline',
-  facades: 'business-outline',
-  fixed_glass: 'apps-outline',
-  shutters: 'menu-outline',
-};
-
 interface StepCategoryProps {
   categories: Category[];
   onSelect: (c: Category) => void;
 }
 
 export function StepCategory({ categories, onSelect }: StepCategoryProps) {
-  const { colors, isDark } = useAppTheme();
+  const { colors } = useAppTheme();
   const grid = categories.filter((c) => c.slug !== 'shutters').slice(0, 4);
   const shutters = categories.find((c) => c.slug === 'shutters');
 
   const cardShadow = {
     shadowColor: '#1E275E',
     shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: isDark ? 0 : 0.06,
+    shadowOpacity: 0.06,
     shadowRadius: 12,
-    elevation: isDark ? 0 : 2,
+    elevation: 2,
   };
 
   const renderCard = (cat: Category, fullWidth = false) => (
@@ -48,9 +40,7 @@ export function StepCategory({ categories, onSelect }: StepCategoryProps) {
         fullWidth && styles.wideInner,
       ]}
     >
-      <View style={[styles.iconBox, fullWidth && styles.iconBoxWide]}>
-        <Ionicons name={ICONS[cat.slug] ?? 'cube-outline'} size={26} color={Colors.primary} />
-      </View>
+      <CategoryIcon slug={cat.slug} size={fullWidth ? 64 : 72} variant="soft" />
       <View style={fullWidth ? styles.wideText : undefined}>
         <Text style={[styles.title, { color: Colors.primary }, fullWidth && styles.titleWide]}>
           {cat.nameAr}
@@ -61,16 +51,11 @@ export function StepCategory({ categories, onSelect }: StepCategoryProps) {
   );
 
   return (
-    <ScrollView
-      contentContainerStyle={styles.pad}
-      showsVerticalScrollIndicator={false}
-    >
+    <ScrollView contentContainerStyle={styles.pad} showsVerticalScrollIndicator={false}>
       <Text style={[styles.heading, { color: Colors.primary }]}>{ar.services.selectTitle}</Text>
       <Text style={[styles.lead, { color: colors.textSecondary }]}>{ar.services.selectSubtitle}</Text>
 
-      <View style={styles.grid}>
-        {grid.map((cat) => renderCard(cat))}
-      </View>
+      <View style={styles.grid}>{grid.map((cat) => renderCard(cat))}</View>
 
       {shutters ? <View style={{ marginTop: GAP }}>{renderCard(shutters, true)}</View> : null}
     </ScrollView>
@@ -98,7 +83,7 @@ const styles = StyleSheet.create({
     marginBottom: 22,
   },
   grid: {
-    flexDirection: 'row',
+    flexDirection: 'row-reverse',
     flexWrap: 'wrap',
     gap: GAP,
   },
@@ -106,10 +91,10 @@ const styles = StyleSheet.create({
     width: CARD_W,
     borderRadius: 18,
     borderWidth: StyleSheet.hairlineWidth,
-    paddingVertical: 22,
+    paddingVertical: 20,
     paddingHorizontal: 12,
     alignItems: 'center',
-    gap: 10,
+    gap: 12,
   },
   wideCard: {
     width: '100%',
@@ -119,20 +104,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
   },
   wideInner: {
-    flexDirection: 'row',
+    flexDirection: 'row-reverse',
     alignItems: 'center',
     gap: 14,
-  },
-  iconBox: {
-    width: 52,
-    height: 52,
-    borderRadius: 14,
-    backgroundColor: '#F0F1F5',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  iconBoxWide: {
-    marginBottom: 0,
   },
   wideText: {
     flex: 1,

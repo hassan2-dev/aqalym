@@ -17,16 +17,6 @@ export const Colors = {
     muted: '#9A9CA3',
     inverse: '#FFFFFF',
   },
-  dark: {
-    background: '#0F1115',
-    card: '#1A1C22',
-    border: '#2A2D36',
-    text: {
-      primary: '#F2F3F7',
-      secondary: '#A0A3AD',
-      muted: '#6E7078',
-    },
-  },
 } as const;
 
 export const ORDER_STATUS_META: Record<

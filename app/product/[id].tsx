@@ -26,7 +26,7 @@ import { useAuthStore } from '@/stores/authStore';
 export default function ProductDetailScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const insets = useSafeAreaInsets();
-  const { colors, isDark } = useAppTheme();
+  const { colors } = useAppTheme();
   const { data: product, isLoading, isError, refetch } = useProduct(id ?? '');
   const user = useAuthStore((s) => s.user);
   const createOrder = useCreateOrder();
@@ -56,7 +56,7 @@ export default function ProductDetailScreen() {
   const cardBg = {
     backgroundColor: colors.card,
     borderColor: colors.border,
-    shadowOpacity: isDark ? 0 : 0.06,
+    shadowOpacity: 0.06,
   };
 
   const onOrder = async () => {
@@ -160,7 +160,7 @@ export default function ProductDetailScreen() {
             <Text style={[styles.sectionTitle, { color: Colors.primary }]}>الخيارات</Text>
             <View style={styles.chips}>
               {product.variants.map((v) => (
-                <View key={v} style={[styles.chip, { backgroundColor: isDark ? '#2A2D36' : '#F0F1F5' }]}>
+                <View key={v} style={[styles.chip, { backgroundColor: '#F0F1F5' }]}>
                   <Text style={{ color: Colors.primary, fontFamily: 'IBMPlexSansArabic_500Medium', fontSize: 13 }}>
                     {v}
                   </Text>
@@ -228,8 +228,8 @@ const styles = StyleSheet.create({
     marginBottom: 14,
   },
   badgeRow: {
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
+    flexDirection: 'row-reverse',
+    justifyContent: 'flex-start',
     gap: 8,
     marginBottom: 10,
   },
@@ -319,26 +319,28 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
   specRow: {
-    flexDirection: 'row',
+    flexDirection: 'row-reverse',
     justifyContent: 'space-between',
     paddingVertical: 10,
   },
   specLabel: {
     fontFamily: 'IBMPlexSansArabic_500Medium',
     fontSize: 13,
+    writingDirection: 'rtl',
   },
   specValue: {
     fontFamily: 'IBMPlexSansArabic_400Regular',
     fontSize: 13,
+    writingDirection: 'rtl',
   },
-  chips: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
+  chips: { flexDirection: 'row-reverse', flexWrap: 'wrap', gap: 8 },
   chip: {
     paddingHorizontal: 14,
     paddingVertical: 10,
     borderRadius: 999,
   },
   qtyRow: {
-    flexDirection: 'row',
+    flexDirection: 'row-reverse',
     alignItems: 'center',
     justifyContent: 'center',
     gap: 20,
@@ -364,7 +366,7 @@ const styles = StyleSheet.create({
     marginTop: 12,
   },
   footer: {
-    flexDirection: 'row',
+    flexDirection: 'row-reverse',
     alignItems: 'center',
     gap: 12,
     paddingHorizontal: 16,

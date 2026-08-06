@@ -38,7 +38,7 @@ export default function HomeScreen() {
 
   return (
     <View style={{ flex: 1, backgroundColor: colors.background }}>
-      <HomeHeader onNotifications={() => router.push('/(tabs)/orders')} />
+      <HomeHeader onNotifications={() => router.push('/notifications')} />
 
       <ScrollView
         style={{ flex: 1 }}
@@ -62,7 +62,7 @@ export default function HomeScreen() {
           >
             {catLoading
               ? [1, 2, 3, 4].map((i) => (
-                  <Skeleton key={i} width={72} height={72} borderRadius={36} />
+                  <Skeleton key={i} width={72} height={72} borderRadius={20} />
                 ))
               : categories.map((cat) => (
                   <CategoryCircle
@@ -75,7 +75,11 @@ export default function HomeScreen() {
         </View>
 
         <View style={[styles.block, styles.pad]}>
-          <SectionHeader title={ar.home.featuredTitle} />
+          <SectionHeader
+            title={ar.home.featuredTitle}
+            actionLabel={ar.home.viewAll}
+            onAction={() => router.push('/ready-products')}
+          />
           {readyLoading ? (
             <View style={styles.grid}>
               <Skeleton height={180} style={{ flex: 1, borderRadius: 14 }} />
@@ -83,7 +87,7 @@ export default function HomeScreen() {
             </View>
           ) : (
             <View style={styles.gridWrap}>
-              {readyProducts.map((p) => (
+              {readyProducts.slice(0, 4).map((p) => (
                 <FeaturedGridCard
                   key={p.id}
                   product={p}
@@ -99,8 +103,8 @@ export default function HomeScreen() {
         <View style={[styles.block, styles.pad]}>
           <SectionHeader
             title={ar.home.projectsTitle}
-            actionLabel={ar.home.exploreGallery}
-            onAction={goServices}
+            actionLabel={ar.home.viewAll}
+            onAction={() => router.push('/projects')}
           />
           {projLoading ? (
             <Skeleton height={300} borderRadius={16} />
@@ -128,16 +132,17 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
   },
   catList: {
+    flexDirection: 'row-reverse',
     paddingHorizontal: 20,
     gap: 14,
   },
   grid: {
-    flexDirection: 'row',
+    flexDirection: 'row-reverse',
     gap: 12,
   },
   gridWrap: {
-    flexDirection: 'row',
+    flexDirection: 'row-reverse',
     flexWrap: 'wrap',
-    gap: 12,
+    justifyContent: 'space-between',
   },
 });

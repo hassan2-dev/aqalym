@@ -13,15 +13,13 @@ import { useAppTheme } from '@/hooks/useAppTheme';
 import { useAuthStore } from '@/stores/authStore';
 
 export default function OrdersScreen() {
-  const { colors, isDark } = useAppTheme();
+  const { colors } = useAppTheme();
   const user = useAuthStore((s) => s.user);
   const { data: orders = [], isLoading, refetch, isRefetching } = useOrders();
 
   return (
     <View style={[styles.wrap, { backgroundColor: colors.background }]}>
-      <HomeHeader
-        onNotifications={() => undefined}
-      />
+      <HomeHeader onNotifications={() => router.push('/notifications')} />
 
       <View style={styles.head}>
         <Text style={[styles.title, { color: Colors.primary }]}>{ar.orders.title}</Text>
@@ -32,7 +30,7 @@ export default function OrdersScreen() {
 
       {!user ? (
         <View style={styles.emptyWrap}>
-          <View style={[styles.emptyIcon, { backgroundColor: isDark ? '#2A2D36' : '#EEF0F7' }]}>
+          <View style={[styles.emptyIcon, { backgroundColor: '#EEF0F7' }]}>
             <Ionicons name="log-in-outline" size={32} color={Colors.primary} />
           </View>
           <Text style={[styles.emptyTitle, { color: Colors.primary }]}>سجّل الدخول لعرض طلباتك</Text>
@@ -59,7 +57,7 @@ export default function OrdersScreen() {
           showsVerticalScrollIndicator={false}
           ListEmptyComponent={
             <View style={styles.emptyWrap}>
-              <View style={[styles.emptyIcon, { backgroundColor: isDark ? '#2A2D36' : '#EEF0F7' }]}>
+              <View style={[styles.emptyIcon, { backgroundColor: '#EEF0F7' }]}>
                 <Ionicons name="document-text-outline" size={32} color={Colors.primary} />
               </View>
               <Text style={[styles.emptyTitle, { color: Colors.primary }]}>{ar.orders.empty}</Text>

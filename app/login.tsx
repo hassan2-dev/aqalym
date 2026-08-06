@@ -15,6 +15,7 @@ import { Ionicons } from '@expo/vector-icons';
 
 import { Button } from '@/components/ui/Button';
 import { BrandLogo } from '@/components/ui/BrandLogo';
+import { Input } from '@/components/ui/Input';
 import { ar } from '@/constants/i18n';
 import { Colors, COMPANY } from '@/constants/theme';
 import { useAppTheme } from '@/hooks/useAppTheme';
@@ -28,13 +29,20 @@ export default function LoginScreen() {
   const { colors } = useAppTheme();
   const sendOtp = useAuthStore((s) => s.sendOtp);
   const verifyOtp = useAuthStore((s) => s.verifyOtp);
+  const updateProfile = useAuthStore((s) => s.updateProfile);
   const pendingPhone = useAuthStore((s) => s.pendingPhone);
 
-  const [phase, setPhase] = useState<'phone' | 'otp'>('phone');
+  const [phase, setPhase] = useState<'phone' | 'otp' | 'name'>('phone');
   const [phone, setPhone] = useState('');
   const [otp, setOtp] = useState('');
+  const [name, setName] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+
+  const finish = () => {
+    if (router.canGoBack()) router.back();
+    else router.replace('/(tabs)/profile');
+  };
 
   const onSend = async () => {
     if (!isValidIraqiPhone(phone)) {
@@ -57,11 +65,29 @@ export default function LoginScreen() {
     try {
       setLoading(true);
       setError('');
-      await verifyOtp(otp);
-      if (router.canGoBack()) router.back();
-      else router.replace('/(tabs)/profile');
+      const user = await verifyOtp(otp);
+      if (user.name?.trim()) {
+        finish();
+        return;
+      }
+      setPhase('name');
     } catch {
       setError(ar.auth.invalidOtp);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const onSaveName = async () => {
+    if (!name.trim()) {
+      setError(ar.auth.nameRequired);
+      return;
+    }
+    try {
+      setLoading(true);
+      setError('');
+      await updateProfile({ name: name.trim() });
+      finish();
     } finally {
       setLoading(false);
     }
@@ -123,6 +149,30 @@ export default function LoginScreen() {
             {error ? <Text style={[styles.error, { color: colors.error }]}>{error}</Text> : null}
             {isDemoMode ? <Text style={styles.demo}>{ar.auth.demoHint}</Text> : null}
             <Button title={ar.auth.sendOtp} onPress={onSend} loading={loading} style={styles.cta} />
+          </View>
+        ) : phase === 'name' ? (
+          <View style={styles.form}>
+            <Text style={styles.label}>{ar.auth.completeProfile}</Text>
+            <Text style={[styles.otpHint, { color: colors.textSecondary }]}>
+              {ar.auth.completeProfileBody}
+            </Text>
+            <Input
+              label={ar.auth.nameLabel}
+              placeholder={ar.auth.namePlaceholder}
+              value={name}
+              onChangeText={(t) => {
+                setName(t);
+                setError('');
+              }}
+              error={error || undefined}
+              autoFocus
+            />
+            <Button
+              title={ar.auth.continueLabel}
+              onPress={onSaveName}
+              loading={loading}
+              style={styles.cta}
+            />
           </View>
         ) : (
           <View style={styles.form}>

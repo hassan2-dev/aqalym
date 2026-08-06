@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
   pad: { padding: 20, paddingBottom: 40 },
   h1: { fontFamily: 'IBMPlexSansArabic_700Bold', fontSize: 24, textAlign: 'right' },
   p: { fontFamily: 'IBMPlexSansArabic_400Regular', fontSize: 14, lineHeight: 24, textAlign: 'right', marginTop: 8 },
-  row: { flexDirection: 'row', alignItems: 'center', gap: 14 },
+  row: { flexDirection: 'row-reverse', alignItems: 'center', gap: 14 },
   label: { fontFamily: 'IBMPlexSansArabic_400Regular', fontSize: 12, textAlign: 'right', writingDirection: 'rtl' },
   value: { fontFamily: 'IBMPlexSansArabic_600SemiBold', fontSize: 16, textAlign: 'right', writingDirection: 'rtl', marginTop: 2 },
 });

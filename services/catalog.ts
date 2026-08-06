@@ -12,6 +12,7 @@ import {
 
 import {
   SEED_ACCESSORIES,
+  SEED_CATALOGS,
   SEED_CATEGORIES,
   SEED_GLASS_TYPES,
   SEED_PRODUCTS,
@@ -26,9 +27,11 @@ import type {
   Order,
   Product,
   Project,
+  SpecCatalog,
   User,
 } from '@/types/models';
 import { getFirebaseAuth, getFirebaseDb, isDemoMode } from '@/services/firebase';
+import { resolveProductSpecifications } from '@/utils/product-specs';
 
 const ORDERS_KEY = '@aqalym/orders';
 const USERS_KEY = '@aqalym/users';
@@ -43,6 +46,33 @@ function generateOrderNumber() {
   return `AQ-${stamp}${rand}`;
 }
 
+async function loadCatalogs(): Promise<SpecCatalog[]> {
+  const db = getFirebaseDb();
+  if (!db || isDemoMode) return [...SEED_CATALOGS];
+  const snap = await getDocs(collection(db, 'catalogs'));
+  return snap.docs.map((d) => ({ id: d.id, ...d.data() }) as SpecCatalog);
+}
+
+function hydrateProduct(product: Product, catalogs: SpecCatalog[]): Product {
+  const catalog = catalogs.find((c) => c.id === product.catalogId) ?? null;
+  return {
+    ...product,
+    catalogId: product.catalogId ?? null,
+    extraSpecifications: product.extraSpecifications ?? [],
+    specifications: resolveProductSpecifications(product, catalog),
+  };
+}
+
+export async function getCatalogs(): Promise<SpecCatalog[]> {
+  await delay(150);
+  return loadCatalogs();
+}
+
+export async function getCatalogById(id: string): Promise<SpecCatalog | null> {
+  const list = await loadCatalogs();
+  return list.find((c) => c.id === id) ?? null;
+}
+
 export async function getCategories(): Promise<Category[]> {
   await delay(200);
   const db = getFirebaseDb();
@@ -55,15 +85,18 @@ export async function getCategories(): Promise<Category[]> {
 
 export async function getProducts(categoryId?: string): Promise<Product[]> {
   await delay(250);
+  const catalogs = await loadCatalogs();
   const db = getFirebaseDb();
   if (!db || isDemoMode) {
-    const list = SEED_PRODUCTS;
+    const list = SEED_PRODUCTS.map((p) => hydrateProduct(p, catalogs));
     return categoryId ? list.filter((p) => p.categoryId === categoryId) : list;
   }
   const base = collection(db, 'products');
   const q = categoryId ? query(base, where('categoryId', '==', categoryId)) : query(base);
   const snap = await getDocs(q);
-  return snap.docs.map((d) => ({ id: d.id, ...d.data() }) as Product);
+  return snap.docs
+    .map((d) => ({ id: d.id, ...d.data() }) as Product)
+    .map((p) => hydrateProduct(p, catalogs));
 }
 
 export async function getFeaturedProducts(): Promise<Product[]> {
@@ -78,13 +111,15 @@ export async function getReadyProducts(): Promise<Product[]> {
 
 export async function getProductById(id: string): Promise<Product | null> {
   await delay(200);
+  const catalogs = await loadCatalogs();
   const db = getFirebaseDb();
   if (!db || isDemoMode) {
-    return SEED_PRODUCTS.find((p) => p.id === id) ?? null;
+    const found = SEED_PRODUCTS.find((p) => p.id === id);
+    return found ? hydrateProduct(found, catalogs) : null;
   }
   const snap = await getDoc(doc(db, 'products', id));
   if (!snap.exists()) return null;
-  return { id: snap.id, ...snap.data() } as Product;
+  return hydrateProduct({ id: snap.id, ...snap.data() } as Product, catalogs);
 }
 
 export async function filterCompatibleProducts(

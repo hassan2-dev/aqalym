@@ -2,7 +2,6 @@
 module.exports = {
   content: ['./app/**/*.{js,jsx,ts,tsx}', './components/**/*.{js,jsx,ts,tsx}', './src/**/*.{js,jsx,ts,tsx}'],
   presets: [require('nativewind/preset')],
-  darkMode: 'class',
   theme: {
     extend: {
       colors: {
@@ -47,15 +46,12 @@ module.exports = {
         },
         background: {
           DEFAULT: '#F7F8FA',
-          dark: '#0F1115',
         },
         card: {
           DEFAULT: '#FFFFFF',
-          dark: '#1A1C22',
         },
         border: {
           DEFAULT: '#E8EAEE',
-          dark: '#2A2D36',
         },
       },
       fontFamily: {

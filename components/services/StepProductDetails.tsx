@@ -20,7 +20,7 @@ import { useWizardStore } from '@/stores/wizardStore';
 const { width: SCREEN_W } = Dimensions.get('window');
 
 export function StepProductDetails({ onRequest }: { onRequest: () => void }) {
-  const { colors, isDark } = useAppTheme();
+  const { colors } = useAppTheme();
   const product = useWizardStore((s) => s.selectedProduct);
   const measurements = useWizardStore((s) => s.measurements);
   const selectedVariant = useWizardStore((s) => s.selectedVariant);
@@ -44,7 +44,7 @@ export function StepProductDetails({ onRequest }: { onRequest: () => void }) {
   const cardBg = {
     backgroundColor: colors.card,
     borderColor: colors.border,
-    shadowOpacity: isDark ? 0 : 0.06,
+    shadowOpacity: 0.06,
   };
 
   return (
@@ -107,13 +107,13 @@ export function StepProductDetails({ onRequest }: { onRequest: () => void }) {
         <View style={[styles.sectionCard, cardBg]}>
           <Text style={[styles.sectionTitle, { color: Colors.primary }]}>{ar.services.dimensions}</Text>
           <View style={styles.dimRow}>
-            <View style={[styles.dimBox, { backgroundColor: isDark ? '#2A2D36' : '#F0F1F5' }]}>
+            <View style={[styles.dimBox, { backgroundColor: '#F0F1F5' }]}>
               <Text style={styles.dimLabel}>العرض</Text>
               <Text style={[styles.dimValue, { color: Colors.primary }]}>
                 {product.minimumWidth}–{product.maximumWidth} سم
               </Text>
             </View>
-            <View style={[styles.dimBox, { backgroundColor: isDark ? '#2A2D36' : '#F0F1F5' }]}>
+            <View style={[styles.dimBox, { backgroundColor: '#F0F1F5' }]}>
               <Text style={styles.dimLabel}>الارتفاع</Text>
               <Text style={[styles.dimValue, { color: Colors.primary }]}>
                 {product.minimumHeight}–{product.maximumHeight} سم
@@ -169,7 +169,7 @@ export function StepProductDetails({ onRequest }: { onRequest: () => void }) {
                     style={[
                       styles.chip,
                       {
-                        backgroundColor: active ? Colors.primary : isDark ? '#2A2D36' : '#F0F1F5',
+                        backgroundColor: active ? Colors.primary : '#F0F1F5',
                         borderColor: active ? Colors.primary : 'transparent',
                       },
                     ]}
@@ -203,7 +203,7 @@ export function StepProductDetails({ onRequest }: { onRequest: () => void }) {
                     style={[
                       styles.chip,
                       {
-                        backgroundColor: active ? Colors.primary : isDark ? '#2A2D36' : '#F0F1F5',
+                        backgroundColor: active ? Colors.primary : '#F0F1F5',
                       },
                     ]}
                   >
@@ -235,7 +235,7 @@ export function StepProductDetails({ onRequest }: { onRequest: () => void }) {
                   style={[
                     styles.accRow,
                     {
-                      backgroundColor: isDark ? '#2A2D36' : '#F7F8FA',
+                      backgroundColor: '#F7F8FA',
                       borderColor: active ? Colors.accent : 'transparent',
                     },
                   ]}
@@ -333,7 +333,7 @@ const styles = StyleSheet.create({
     elevation: 2,
   },
   sectionHead: {
-    flexDirection: 'row',
+    flexDirection: 'row-reverse',
     justifyContent: 'space-between',
     alignItems: 'center',
     marginBottom: 12,
@@ -346,20 +346,22 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
   specRow: {
-    flexDirection: 'row',
+    flexDirection: 'row-reverse',
     justifyContent: 'space-between',
     paddingVertical: 10,
   },
   specLabel: {
     fontFamily: 'IBMPlexSansArabic_500Medium',
     fontSize: 13,
+    writingDirection: 'rtl',
   },
   specValue: {
     fontFamily: 'IBMPlexSansArabic_400Regular',
     fontSize: 13,
+    writingDirection: 'rtl',
   },
   dimRow: {
-    flexDirection: 'row',
+    flexDirection: 'row-reverse',
     gap: 10,
   },
   dimBox: {
@@ -380,7 +382,7 @@ const styles = StyleSheet.create({
     textAlign: 'right',
   },
   colorRow: {
-    flexDirection: 'row',
+    flexDirection: 'row-reverse',
     flexWrap: 'wrap',
     gap: 12,
   },
@@ -400,7 +402,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   chips: {
-    flexDirection: 'row',
+    flexDirection: 'row-reverse',
     flexWrap: 'wrap',
     gap: 8,
   },
@@ -410,7 +412,7 @@ const styles = StyleSheet.create({
     borderRadius: 999,
   },
   accRow: {
-    flexDirection: 'row',
+    flexDirection: 'row-reverse',
     alignItems: 'center',
     gap: 12,
     padding: 12,

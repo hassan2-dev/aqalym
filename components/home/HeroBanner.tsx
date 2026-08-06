@@ -30,8 +30,8 @@ export function HeroBanner({ onCta }: HeroBannerProps) {
         <Text style={styles.title}>{ar.home.heroTitle}</Text>
         <Text style={styles.subtitle}>{ar.home.heroSubtitle}</Text>
         <Pressable onPress={onCta} style={styles.cta}>
-          <Ionicons name="arrow-back" size={16} color={Colors.primary} />
           <Text style={styles.ctaText}>{ar.home.heroCta}</Text>
+          <Ionicons name="chevron-back" size={16} color={Colors.primary} />
         </Pressable>
       </View>
     </Animated.View>
@@ -67,8 +67,8 @@ const styles = StyleSheet.create({
   },
   cta: {
     marginTop: 6,
-    alignSelf: 'flex-start',
-    flexDirection: 'row',
+    alignSelf: 'flex-end',
+    flexDirection: 'row-reverse',
     alignItems: 'center',
     gap: 8,
     backgroundColor: '#D6DCF5',
@@ -80,5 +80,6 @@ const styles = StyleSheet.create({
     fontFamily: 'IBMPlexSansArabic_600SemiBold',
     fontSize: 14,
     color: Colors.primary,
+    writingDirection: 'rtl',
   },
 });

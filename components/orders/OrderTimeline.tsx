@@ -72,7 +72,7 @@ export function OrderTimeline({ status }: { status: OrderStatus }) {
 const styles = StyleSheet.create({
   wrap: { gap: 0 },
   row: {
-    flexDirection: 'row',
+    flexDirection: 'row-reverse',
     minHeight: 44,
   },
   rail: {

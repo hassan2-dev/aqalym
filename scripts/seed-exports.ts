@@ -4,4 +4,11 @@
  *
  * Usage (Node / admin script): import seed data and write to collections.
  */
-export { SEED_CATEGORIES, SEED_PRODUCTS, SEED_PROJECTS, SEED_GLASS_TYPES, SEED_ACCESSORIES } from '@/data/seed';
+export {
+  SEED_ACCESSORIES,
+  SEED_CATALOGS,
+  SEED_CATEGORIES,
+  SEED_GLASS_TYPES,
+  SEED_PRODUCTS,
+  SEED_PROJECTS,
+} from '@/data/seed';

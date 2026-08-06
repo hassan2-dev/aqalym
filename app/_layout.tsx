@@ -15,6 +15,7 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import 'react-native-reanimated';
 
 import { OfflineBanner } from '@/components/ui/OfflineBanner';
+import { SplashGate } from '@/components/ui/SplashGate';
 import { useAppTheme } from '@/hooks/useAppTheme';
 import { AppProviders } from '@/providers/AppProviders';
 
@@ -44,17 +45,18 @@ export default function RootLayout() {
     <GestureHandlerRootView style={{ flex: 1 }}>
       <AppProviders>
         <RootNavigator />
+        <SplashGate />
       </AppProviders>
     </GestureHandlerRootView>
   );
 }
 
 function RootNavigator() {
-  const { isDark, colors } = useAppTheme();
+  const { colors } = useAppTheme();
 
   return (
     <>
-      <StatusBar style={isDark ? 'light' : 'dark'} />
+      <StatusBar style="dark" />
       <OfflineBanner />
       <Stack
         screenOptions={{
@@ -72,6 +74,9 @@ function RootNavigator() {
         <Stack.Screen name="login" options={{ headerShown: false, presentation: 'modal' }} />
         <Stack.Screen name="product/[id]" options={{ title: 'تفاصيل المنتج' }} />
         <Stack.Screen name="order/[id]" options={{ title: 'تفاصيل الطلب' }} />
+        <Stack.Screen name="ready-products" options={{ title: 'المنتجات الجاهزة' }} />
+        <Stack.Screen name="projects" options={{ title: 'مشاريع منجزة' }} />
+        <Stack.Screen name="notifications" options={{ title: 'الإشعارات' }} />
         <Stack.Screen name="privacy" options={{ title: 'سياسة الخصوصية' }} />
         <Stack.Screen name="terms" options={{ title: 'الشروط والأحكام' }} />
         <Stack.Screen name="about" options={{ title: 'عن أقاليم' }} />

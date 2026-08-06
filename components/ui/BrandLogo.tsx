@@ -8,67 +8,43 @@ interface BrandLogoProps {
   style?: ViewStyle;
 }
 
-const LOGO = require('../../assets/logo.jpg');
+const LOGO_FULL = require('../../assets/images/logo-full.png');
+const LOGO_MARK = require('../../assets/images/logo-mark.png');
 
-/**
- * Official AQALYM mark. Source file is dual (Arabic | English);
- * header/hero crop to the Arabic half for RTL UI.
- */
+/** Official AQALYM mark, exported from the brand sheet with transparent background. */
 export function BrandLogo({ variant = 'header', style }: BrandLogoProps) {
-  if (variant === 'mark') {
-    return (
-      <View style={[styles.markWrap, style]}>
-        <Image source={LOGO} style={styles.markImg} contentFit="contain" />
-      </View>
-    );
-  }
-
   if (variant === 'hero') {
     return (
-      <View style={[styles.heroClip, style]}>
-        <Image source={LOGO} style={styles.heroImg} contentFit="contain" />
+      <View style={[styles.hero, style]}>
+        <Image source={LOGO_FULL} style={styles.fill} contentFit="contain" />
       </View>
     );
   }
 
   return (
-    <View style={[styles.headerClip, style]}>
-      <Image source={LOGO} style={styles.headerImg} contentFit="contain" />
+    <View style={[variant === 'mark' ? styles.mark : styles.header, style]}>
+      <Image source={LOGO_MARK} style={styles.fill} contentFit="contain" />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  headerClip: {
-    height: 40,
-    width: 108,
-    overflow: 'hidden',
-    alignItems: 'flex-start',
+  fill: {
+    height: '100%',
+    width: '100%',
   },
-  headerImg: {
-    height: 40,
-    width: 216,
+  header: {
+    height: 38,
+    width: 38,
   },
-  heroClip: {
-    height: 120,
-    width: 200,
-    overflow: 'hidden',
+  hero: {
     alignSelf: 'center',
+    height: 188,
+    width: 140,
   },
-  heroImg: {
-    height: 120,
-    width: 400,
-  },
-  markWrap: {
+  mark: {
+    alignSelf: 'center',
     height: 72,
     width: 72,
-    overflow: 'hidden',
-    alignSelf: 'center',
-  },
-  markImg: {
-    height: 72,
-    // Approximate icon-only crop from the dual sheet
-    width: 144,
-    transform: [{ translateX: -8 }],
   },
 });

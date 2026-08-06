@@ -2,6 +2,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { Image } from 'expo-image';
 import { Dimensions, Pressable, StyleSheet, Text, View } from 'react-native';
 
+import { CategoryIcon } from '@/components/ui/CategoryIcon';
 import { ar } from '@/constants/i18n';
 import { Colors } from '@/constants/theme';
 import { useAppTheme } from '@/hooks/useAppTheme';
@@ -12,14 +13,6 @@ const { width: SCREEN_W } = Dimensions.get('window');
 const PAD = 20;
 const GAP = 12;
 const CARD_W = (SCREEN_W - PAD * 2 - GAP) / 2;
-
-const CATEGORY_ICONS: Record<string, keyof typeof Ionicons.glyphMap> = {
-  doors: 'exit-outline',
-  windows: 'tablet-landscape-outline',
-  facades: 'business-outline',
-  fixed_glass: 'square-outline',
-  shutters: 'options-outline',
-};
 
 export function SectionHeader({
   title,
@@ -50,8 +43,7 @@ export function CategoryCircle({
   category: Category;
   onPress: () => void;
 }) {
-  const { colors, isDark } = useAppTheme();
-  const icon = CATEGORY_ICONS[category.slug] ?? 'cube-outline';
+  const { colors } = useAppTheme();
 
   return (
     <Pressable onPress={onPress} style={styles.catItem}>
@@ -59,13 +51,12 @@ export function CategoryCircle({
         style={[
           styles.catCircle,
           {
-            backgroundColor: colors.card,
-            shadowOpacity: isDark ? 0 : 0.08,
+            shadowOpacity: 0.1,
             borderColor: colors.border,
           },
         ]}
       >
-        <Ionicons name={icon} size={28} color={Colors.primary} />
+        <CategoryIcon slug={category.slug} size={72} variant="soft" />
       </View>
       <Text style={[styles.catLabel, { color: colors.text }]} numberOfLines={1}>
         {category.nameAr}
@@ -128,13 +119,13 @@ export function ProjectsGallery({ projects }: { projects: Project[] }) {
 }
 
 export function WhySection() {
-  const { colors, isDark } = useAppTheme();
+  const { colors } = useAppTheme();
   return (
     <View style={styles.section}>
       <View
         style={[
           styles.whyBox,
-          { backgroundColor: isDark ? colors.card : '#EEF0F4' },
+          { backgroundColor: '#EEF0F4' },
         ]}
       >
         <Text style={[styles.whyHeading, { color: colors.text }]}>{ar.home.whyTitle}</Text>
@@ -162,9 +153,10 @@ const styles = StyleSheet.create({
     marginTop: 28,
   },
   sectionHeader: {
-    flexDirection: 'row',
+    flexDirection: 'row-reverse',
     justifyContent: 'space-between',
     alignItems: 'center',
+    gap: 12,
     marginBottom: 14,
   },
   sectionTitle: {
@@ -172,12 +164,13 @@ const styles = StyleSheet.create({
     fontSize: 18,
     textAlign: 'right',
     writingDirection: 'rtl',
-    flex: 1,
   },
   action: {
     fontFamily: 'IBMPlexSansArabic_500Medium',
     fontSize: 13,
     color: '#9A8B78',
+    textAlign: 'left',
+    writingDirection: 'rtl',
   },
   catItem: {
     width: 84,
@@ -187,9 +180,10 @@ const styles = StyleSheet.create({
   catCircle: {
     width: 72,
     height: 72,
-    borderRadius: 36,
+    borderRadius: 20,
     alignItems: 'center',
     justifyContent: 'center',
+    overflow: 'hidden',
     borderWidth: StyleSheet.hairlineWidth,
     shadowColor: '#1E275E',
     shadowOffset: { width: 0, height: 4 },
@@ -204,6 +198,7 @@ const styles = StyleSheet.create({
   },
   gridCard: {
     width: CARD_W,
+    marginBottom: 18,
     position: 'relative',
   },
   gridImage: {
@@ -271,7 +266,7 @@ const styles = StyleSheet.create({
     textAlign: 'right',
   },
   galleryRow: {
-    flexDirection: 'row',
+    flexDirection: 'row-reverse',
     gap: 10,
   },
   gallerySmall: {
@@ -299,7 +294,7 @@ const styles = StyleSheet.create({
     gap: 16,
   },
   whyRow: {
-    flexDirection: 'row',
+    flexDirection: 'row-reverse',
     gap: 12,
     alignItems: 'flex-start',
   },

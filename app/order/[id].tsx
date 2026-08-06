@@ -14,13 +14,13 @@ import { formatDateAr, formatIQD } from '@/lib/format';
 
 export default function OrderDetailScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
-  const { colors, isDark } = useAppTheme();
+  const { colors } = useAppTheme();
   const { data: order, isLoading, isError, refetch } = useOrder(id ?? '');
 
   const cardStyle = {
     backgroundColor: colors.card,
     borderColor: colors.border,
-    shadowOpacity: isDark ? 0 : 0.06,
+    shadowOpacity: 0.06,
   };
 
   if (isLoading) {
@@ -121,7 +121,7 @@ const styles = StyleSheet.create({
     elevation: 2,
   },
   row: {
-    flexDirection: 'row',
+    flexDirection: 'row-reverse',
     justifyContent: 'space-between',
     alignItems: 'center',
   },

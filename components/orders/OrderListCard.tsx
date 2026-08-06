@@ -10,7 +10,7 @@ import { formatDateAr, formatIQD } from '@/lib/format';
 import type { Order } from '@/types/models';
 
 export function OrderListCard({ order, onPress }: { order: Order; onPress: () => void }) {
-  const { colors, isDark } = useAppTheme();
+  const { colors } = useAppTheme();
   const isReady = order.orderKind === 'ready';
 
   return (
@@ -21,7 +21,7 @@ export function OrderListCard({ order, onPress }: { order: Order; onPress: () =>
         {
           backgroundColor: colors.card,
           borderColor: colors.border,
-          shadowOpacity: isDark ? 0 : 0.06,
+          shadowOpacity: 0.06,
         },
       ]}
     >
@@ -40,7 +40,7 @@ export function OrderListCard({ order, onPress }: { order: Order; onPress: () =>
         {order.productImage ? (
           <Image source={{ uri: order.productImage }} style={styles.thumb} contentFit="cover" />
         ) : (
-          <View style={[styles.thumb, styles.thumbPlaceholder, { backgroundColor: isDark ? '#2A2D36' : '#F0F1F5' }]}>
+          <View style={[styles.thumb, styles.thumbPlaceholder, { backgroundColor: '#F0F1F5' }]}>
             <Ionicons name="cube-outline" size={24} color={Colors.primary} />
           </View>
         )}
@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
     elevation: 2,
   },
   top: {
-    flexDirection: 'row',
+    flexDirection: 'row-reverse',
     justifyContent: 'space-between',
     alignItems: 'flex-start',
   },
@@ -108,7 +108,7 @@ const styles = StyleSheet.create({
     marginTop: 2,
   },
   body: {
-    flexDirection: 'row',
+    flexDirection: 'row-reverse',
     alignItems: 'center',
     gap: 12,
   },

@@ -18,7 +18,7 @@ const TAB_ICONS: Record<string, { active: IconName; inactive: IconName }> = {
 
 export function InstagramTabBar({ state, descriptors, navigation }: BottomTabBarProps) {
   const insets = useSafeAreaInsets();
-  const { colors, isDark } = useAppTheme();
+  const { colors } = useAppTheme();
   const bottom = Math.max(insets.bottom, 8);
 
   return (
@@ -27,7 +27,7 @@ export function InstagramTabBar({ state, descriptors, navigation }: BottomTabBar
         styles.wrap,
         {
           backgroundColor: colors.card,
-          borderTopColor: isDark ? colors.border : '#E8EAEE',
+          borderTopColor: '#E8EAEE',
           paddingBottom: bottom,
         },
       ]}
@@ -102,10 +102,8 @@ export function InstagramTabBar({ state, descriptors, navigation }: BottomTabBar
 
 const styles = StyleSheet.create({
   wrap: {
-    // Lock LTR so RTL does not mirror tabs backwards.
-    // Visual order (left → right): الرئيسية | الخدمات | الطلبات | الحساب
-    direction: 'rtl',
-    flexDirection: 'row',
+    // RTL: first tab (الرئيسية) sits on the visual right.
+    flexDirection: 'row-reverse',
     borderTopWidth: StyleSheet.hairlineWidth,
     paddingTop: 6,
     elevation: 0,

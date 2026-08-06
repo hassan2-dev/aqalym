@@ -127,7 +127,6 @@ export const ar = {
     contact: 'تواصل معنا',
     about: 'عن أقاليم',
     logout: 'تسجيل الخروج',
-    darkMode: 'الوضع الداكن',
     version: 'الإصدار',
   },
   auth: {
@@ -146,6 +145,12 @@ export const ar = {
     invalidOtp: 'رمز التحقق غير صحيح',
     demoHint: 'وضع التجربة: استخدم الرمز 123456',
     footer: 'تطبيق أقاليم للألمنيوم ١.٠',
+    nameLabel: 'الاسم الكامل',
+    namePlaceholder: 'اكتب اسمك',
+    nameRequired: 'الرجاء إدخال الاسم',
+    completeProfile: 'أكمل بياناتك',
+    completeProfileBody: 'اسمك يظهر على طلباتك ويسهّل تواصل فريقنا معك',
+    continueLabel: 'متابعة',
   },
   common: {
     loading: 'جاري التحميل...',

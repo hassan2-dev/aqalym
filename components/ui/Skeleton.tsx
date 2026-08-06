@@ -8,7 +8,6 @@ import Animated, {
 } from 'react-native-reanimated';
 
 import { Radius } from '@/constants/theme';
-import { useAppTheme } from '@/hooks/useAppTheme';
 
 interface SkeletonProps {
   width?: number | `${number}%`;
@@ -18,7 +17,6 @@ interface SkeletonProps {
 }
 
 export function Skeleton({ width = '100%', height = 16, borderRadius = Radius.md, style }: SkeletonProps) {
-  const { colors, isDark } = useAppTheme();
   const opacity = useSharedValue(0.4);
 
   useEffect(() => {
@@ -34,7 +32,7 @@ export function Skeleton({ width = '100%', height = 16, borderRadius = Radius.md
           width,
           height,
           borderRadius,
-          backgroundColor: isDark ? '#2A2D36' : '#E8EAEE',
+          backgroundColor: '#E8EAEE',
         },
         animatedStyle,
         style,

@@ -12,7 +12,7 @@ interface CardProps {
 }
 
 export function Card({ children, onPress, style, padded = true }: CardProps) {
-  const { colors, isDark } = useAppTheme();
+  const { colors } = useAppTheme();
   const content = (
     <View
       style={[
@@ -20,7 +20,7 @@ export function Card({ children, onPress, style, padded = true }: CardProps) {
         {
           backgroundColor: colors.card,
           borderColor: colors.border,
-          shadowOpacity: isDark ? 0 : 0.06,
+          shadowOpacity: 0.06,
         },
         padded && styles.padded,
         style,

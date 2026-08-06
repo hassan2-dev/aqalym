@@ -16,13 +16,13 @@ export function StatusBadge({ status }: { status: OrderStatus }) {
 
 const styles = StyleSheet.create({
   badge: {
-    flexDirection: 'row',
+    flexDirection: 'row-reverse',
     alignItems: 'center',
     gap: 6,
     paddingHorizontal: 10,
     paddingVertical: 6,
     borderRadius: 999,
-    alignSelf: 'flex-start',
+    alignSelf: 'flex-end',
   },
   dot: {
     width: 6,

@@ -4,6 +4,7 @@ import {
   createOrder,
   filterCompatibleProducts,
   getAccessories,
+  getCatalogs,
   getCategories,
   getFeaturedProducts,
   getGlassTypes,
@@ -19,6 +20,10 @@ import { useAuthStore } from '@/stores/authStore';
 
 export function useCategories() {
   return useQuery({ queryKey: ['categories'], queryFn: getCategories });
+}
+
+export function useCatalogs() {
+  return useQuery({ queryKey: ['catalogs'], queryFn: getCatalogs });
 }
 
 export function useProducts(categoryId?: string) {

@@ -43,6 +43,18 @@ export interface ProductSpec {
   value: string;
 }
 
+/** Global reusable specification template. */
+export interface SpecCatalog {
+  id: string;
+  name: string;
+  nameAr: string;
+  description: string;
+  descriptionAr: string;
+  specifications: ProductSpec[];
+  createdAt: string;
+  updatedAt: string;
+}
+
 export interface Product {
   id: string;
   categoryId: string;
@@ -60,6 +72,11 @@ export interface Product {
   maximumHeight: number;
   /** Fixed unit price for ready products; unused in custom UI. */
   estimatedPrice: number;
+  /** Linked standard catalog; null when unset. */
+  catalogId: string | null;
+  /** Product-only specification additions. */
+  extraSpecifications: ProductSpec[];
+  /** Denormalized catalog + extras for display. */
   specifications: ProductSpec[];
   variants: string[];
   glassTypes: string[];

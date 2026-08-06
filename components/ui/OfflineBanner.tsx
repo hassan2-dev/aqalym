@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.secondary,
     paddingVertical: 8,
     paddingHorizontal: 16,
-    flexDirection: 'row',
+    flexDirection: 'row-reverse',
     alignItems: 'center',
     justifyContent: 'center',
     gap: 8,
